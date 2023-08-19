@@ -26,8 +26,9 @@ git diff <file>
 git checkout <file>
 
 # Create and manage branches
-git branch <branch-name>
-git checkout <branch-name>
+git branch <branch-name>  // create
+git checkout // all branches
+git checkout <branch-name> // 
 
 # Add a remote repository
 git remote add origin <url>
@@ -35,14 +36,22 @@ git remote add origin <url>
 # Push commits to a remote repository
 git push -u <remote-name> <branch-name>
 
-# Clone a remote repository locally
-git clone <repository-url>
+
 
 # Merge branches
-git merge <branch-name>
+git merge dev  // while on main. merge dev
+
+git push origin main -u
 
 # Rebase changes onto a branch
 git rebase <base-branch>
+
+# Fork and pull request
+git rebase <base-branch>
+
+# Resources : Videos and More 
+
+
 
 
 

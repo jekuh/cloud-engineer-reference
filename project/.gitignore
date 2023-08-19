@@ -1,4 +1,6 @@
 // ignore aws credentials to ~/.aws/credentials
+
+// https:www.github.com/github/gitignore
 secrets.txt
 ~/.aws/credentials
 *.log
