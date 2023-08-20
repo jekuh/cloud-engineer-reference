@@ -1,0 +1,14 @@
+TODO : Udemy Terraform Course - HashiCorp Certified : Terraform Associate 2023
+
+Section 1 : Introduction 
+    why Terraform and not cloudformation
+
+Section 2 :
+    lab setup - Windows - Mac  - Linux
+    
+Section 3 :
+
+Section 4 :
+Section 5 :
+Section 6 :
+Section 7 :
