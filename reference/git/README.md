@@ -49,6 +49,12 @@ git rebase <base-branch>
 # Fork and pull request
 git rebase <base-branch>
 
+#  merge rebase fast-forward  : dev vs f-account_access
+git config pull.rebase  false 
+git config pull.rebase true
+git config pull.ff
+
+
 # Resources : Videos and More 
 
 

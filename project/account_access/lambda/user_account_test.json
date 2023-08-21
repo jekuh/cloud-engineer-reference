@@ -1,0 +1,7 @@
+{
+    "account_id": "1234",
+    "date": "2022-01-01",
+    "role": "admin",
+    "user": "johndoe",
+    "type": "sso"
+  }
