@@ -20,6 +20,9 @@ HTTPie : curl vs HTTPie
 Lazy docker
 
 
+FR <==> 
+
+
 
 
 
