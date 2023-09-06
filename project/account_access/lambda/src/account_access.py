@@ -37,3 +37,8 @@ def lambda_handler(event, context):
         'statusCode': 200,
         'body': 'Data inserted successfully'
     }
+
+
+TABLE_NAME = 'account_access'
+BUCKET_NAME = 'athena4cloudtrail-result'
+FILE_KEY = '5161104c-08e2-4785-af99-b93e05028be7.csv'
