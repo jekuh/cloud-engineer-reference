@@ -7,7 +7,10 @@ module
     accord 
         Dynamodb:  
 
-Daily: Make a small change and commit :) 
+    avm
+      aom-update-test
+
+Daily: Make a small change and commit 
 
 pipenv shell 
 git pull
