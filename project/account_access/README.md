@@ -33,6 +33,8 @@ terraform apply   -var-file="env_config/org_test/test.tfvars" -target=module.acc
 
 terraform destroy -var-file="env_config/org_test/test.tfvars" -target=module.accord.aws_dynamodb_table.account_access
 
+terraform apply   -var-file="env_config/org_test/test.tfvars" -target=module.avm.lambda_check_update
+
 ## Dev ()  (accord_account_id = "946732835423") : login to console using manager role.
 
 
@@ -78,3 +80,17 @@ Task 2:  CICD Pipeline Athena4cloudtrail : account_access
 code: 
 
 error: 
+
+Fair offer: 
+
+1. Screen : 250
+
+https://www.digitec.ch/de/s1/product/lg-ultrawide-34wp500-b-2560-x-1080-pixel-3410-monitor-22726045?utm_source=google&utm_medium=cpc&campaignid=20501673545&adgroupid=&adid=&dgCidg=CjwKCAjwvfmoBhAwEiwAG2tqzHLUoA1hegdQE_eYBm-bB8ZcdGMNwpfY4X7UB9xled3HTaN_PjoBwRoCrZ0QAvD_BwE&gclid=CjwKCAjwvfmoBhAwEiwAG2tqzHLUoA1hegdQE_eYBm-bB8ZcdGMNwpfY4X7UB9xled3HTaN_PjoBwRoCrZ0QAvD_BwE&gclsrc=aw.ds
+
+2. Table : 
+
+https://ergofino.eu/collections/schreibtisch/products/ergofino-dt30-hoehenverstellbarer-schreibtisch-dualer-motor-schwarz
+
+
+
+

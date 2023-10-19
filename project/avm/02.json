@@ -1,0 +1,162 @@
+{
+    "Comment": "AOM update account process. Expected input: { 'AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID': 'arn:aws:states:eu-central-1:<account_id>:execution:aom-update-<env>:<id>', 's3_bucket_name': '<avm-s3-input-bucket-name>', 's3_object_key': 'inbox/<account-name>.json', 'order_input': '<update-order-input>', 'account_info': '<full-account-info>' }",
+    "TimeoutSeconds": 604800,
+    "StartAt": "TASK_check_order_update_type",
+    "States": {
+      "TASK_check_order_update_type": {
+        "Type": "Task",
+        "Resource": "${lambda_check_order_update_type_arn}",
+        "Comment": "Checks order update type (tg_update. tf_update) to be able to skip certain states based on update type",
+      "Parameters": {
+            "order_input.$": "$.order_input"
+          },
+          "ResultPath": "$.updateOrderType",
+          "Next": "CHOICE_order_update_type"
+        },
+        "CHOICE_order_update_type": {
+          "Type": "Choice",
+          "Choices": [
+            {
+              "And": [
+                {
+                  "Variable": "$.updateOrderType.update_type",
+                  "StringEquals": "tag_update"
+                },
+                {
+                  "Variable": "$.account_protection_change",
+                  "BooleanEquals": true
+                },
+                {
+                  "Variable": "$.account_ou_change",
+                  "BooleanEquals": false
+                }
+              ],
+              "Next": "EdgeCaseAccountProtectionChange"
+            },
+            {
+              "And": [
+                {
+                  "Variable": "$.updateOrderType.update_type",
+                  "StringEquals": "tag_update"
+                },
+                {
+                  "Variable": "$.account_protection_change",
+                  "BooleanEquals": false
+                },
+                {
+                  "Variable": "$.account_ou_change",
+                  "BooleanEquals": true
+                }
+              ],
+              "Next": "EdgeCaseAccountOUChange"
+            },
+            {
+              "And": [
+                {
+                  "Variable": "$.updateOrderType.update_type",
+                  "StringEquals": "tf_update"
+                },
+                {
+                  "Variable": "$.account_name_change",
+                  "BooleanEquals": true
+                },
+                {
+                  "Variable": "$.account_protection_change",
+                  "BooleanEquals": false
+                },
+                {
+                  "Variable": "$.account_ou_change",
+                  "BooleanEquals": false
+                }
+              ],
+              "Next": "EdgeCaseAccountNameChange"
+            },
+            {
+              "And": [
+                {
+                  "Variable": "$.updateOrderType.update_type",
+                  "StringEquals": "tf_update"
+                },
+                {
+                  "Variable": "$.account_name_change",
+                  "BooleanEquals": true
+                },
+                {
+                  "Variable": "$.account_protection_change",
+                  "BooleanEquals": true
+                },
+                {
+                  "Variable": "$.account_ou_change",
+                  "BooleanEquals": false
+                }
+              ],
+              "Next": "EdgeCaseAccountNameChange"
+            },
+            {
+              "And": [
+                {
+                  "Variable": "$.updateOrderType.update_type",
+                  "StringEquals": "tf_update"
+                },
+                {
+                  "Variable": "$.account_name_change",
+                  "BooleanEquals": true
+                },
+                {
+                  "Variable": "$.account_protection_change",
+                  "BooleanEquals": false
+                },
+                {
+                  "Variable": "$.account_ou_change",
+                  "BooleanEquals": true
+                }
+              ],
+              "Next": "EdgeCaseAccountNameChange"
+            },
+            {
+              "And": [
+                {
+                  "Variable": "$.updateOrderType.update_type",
+                  "StringEquals": "tf_update"
+                },
+                {
+                  "Variable": "$.account_name_change",
+                  "BooleanEquals": true
+                },
+                {
+                  "Variable": "$.account_protection_change",
+                  "BooleanEquals": true
+                },
+                {
+                  "Variable": "$.account_ou_change",
+                  "BooleanEquals": true
+                }
+              ],
+              "Next": "EdgeCaseAccountNameChange"
+            }
+          ],
+          "Default": "UpdateOrderFileState"
+        },
+        "EdgeCaseAccountProtectionChange": {
+          "Type": "Pass",
+          "Result": "Edge case for Account Protection Change completed.",
+          "End": true
+        },
+        "EdgeCaseAccountOUChange": {
+          "Type": "Pass",
+          "Result": "Edge case for Account OU Change completed.",
+          "End": true
+        },
+        "EdgeCaseAccountNameChange": {
+          "Type": "Pass",
+          "Result": "Edge case for Account Name Change completed.",
+          "End": true
+        },
+        "UpdateOrderFileState": {
+          "Type": "Pass",
+          "Result": "Update order file completed.",
+          "End": true
+        }
+      }
+    }
+  

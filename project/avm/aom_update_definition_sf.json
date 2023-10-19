@@ -1,0 +1,59 @@
+{
+  "Comment": "AOM update account process. Expected input: { 'AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID': 'arn:aws:states:eu-central-1:<account_id>:execution:aom-update-<env>:<id>', 's3_bucket_name': '<avm-s3-input-bucket-name>', 's3_object_key': 'inbox/<account-name>.json', 'order_input': '<update-order-input>', 'account_info': '<full-account-info>' }",
+  "TimeoutSeconds": 604800,
+  "StartAt": "TASK_check_order_update_type",
+  "States": {
+    "TASK_check_order_update_type": {
+      "Type": "Task",
+      "Resource": "${check_order_update_type_lambda_arn}",
+      "Comment": "Checks order update type (tg_update. tf_update) to be able to skip certain states based on update type",
+      "Parameters": {
+        "order_input.$": "$.order_input"
+      },
+      "ResultPath": "$.updateOrderType",
+      "Next": "ChoiceState"
+    },
+    "ChoiceState": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.updateOrderType.update_type",
+          "StringEquals": "tag_update",
+          "Next": "TagUpdateState"
+        },
+        {
+          "Variable": "$.updateOrderType.update_type",
+          "StringEquals": "tf_update",
+          "Next": "TFUpdateState"
+        },
+        {
+          "Variable": "$.updateOrderType.update_type",
+          "StringEquals": "edge_update",
+          "Next": "EdgeUpdateState"
+        }
+      ],
+      "Default": "DefaultState"
+    },
+    "TagUpdateState": {
+      "Type": "Pass",
+      "Result": "Tag update completed.",
+      "End": true
+    },
+    "TFUpdateState": {
+      "Type": "Pass",
+      "Result": "TF update completed.",
+      "End": true
+    },
+    "EdgeUpdateState": {
+      "Type": "Pass",
+      "Result": "Edge update completed.",
+      "End": true
+    },
+    "DefaultState": {
+      "Type": "Fail",
+      "Comment": "Fallback state for unsupported update_type",
+      "Error": "UnsupportedUpdateTypeError",
+      "Cause": "The update_type is not supported."
+    }
+  }
+}

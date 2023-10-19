@@ -1,0 +1,17 @@
+{
+    "Comment": "AOM update account process. Expected input: { 'AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID': 'arn:aws:states:eu-central-1:<account_id>:execution:aom-update-<env>:<id>', 's3_bucket_name': '<avm-s3-input-bucket-name>', 's3_object_key': 'inbox/<account-name>.json', 'order_input': '<update-order-input>', 'account_info': '<full-account-info>' }",
+    "TimeoutSeconds": 604800,
+    "StartAt": "TASK_check_order_update_type",
+    "States": {
+      "TASK_check_order_update_type": {
+        "Type": "Task",
+        "Resource": "arn:aws:lambda:eu-central-1:475737944861:function:oe_aom-test-check_order_update_type",
+        "Comment": "Checks order update type (tg_update. tf_update) to be able to skip certain states based on update type",
+        "Parameters": {
+          "order_input.$": "$.order_input"
+        },
+        "ResultPath": "$.updateOrderType",
+        "End": true
+      }
+    }
+  }

@@ -1,0 +1,52 @@
+tf_update: true
+
+
+{ "order_input" :  
+    {
+        "oe-cherwell-request-id": "136094", 
+        "oe-account-order-type": "create",  
+        "oe-account-budget": "20"
+    
+    }
+}
+
+
+
+tag_update: true
+
+
+{ "order_input" :
+    {
+        "oe-cherwell-request-id": "136094", 
+        "oe-account-order-type": "create",
+        "oe-account-legal-entity": "CH696"
+    
+    }
+}
+
+edge_update: true
+    
+    { "order_input" : 
+        {
+            "oe-cherwell-request-id": "136094", 
+            "oe-account-order-type": "create",
+            "oe-account-protection": true  
+        
+        }
+    }
+
+    "account_name_change": true
+    "account_ou_change": true
+
+
+Update above definition based on  following comments:
+- DefaultState not required since we are in charge of setting the update_type and it can either be tag_update or tf_update.
+- There is no update_type called edge_update. update_type can only be tag_update or tf_update.
+- This means we have following cases:
+    - update_type = tag_update --> all edge-case updates have to be false to go straight to the update order file state
+    - update_type = tf_update --> all edge-case updates have to be false to go straight to the update-order file state
+    - update_type = tag_update and either account_protection_change or account_ou_change is true --> you cannot go straight to the update order file state, you need to go the edge case update path either for account-protection change or for ou-change
+    - update_type = tf_update and account_name_change is true --> you cannot go straight to the update order file state, you need to go to the edge-case-update path for account-name-change
+    - update_type = tf_update and account_name_change is true, and one or both of the other two edge-case updates is true as well --> you cannot go straight to the update order file state you first have to go through all edge-case updates that are set to true
+- We require several AND and OR conditions to determine the next state.
+- Also every edge case is also a tap_update
